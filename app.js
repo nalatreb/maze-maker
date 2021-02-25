@@ -38,23 +38,19 @@ function makeTable() {
  */
 function setBorder(cell, x, y) {
     if (x === 0) {
-        cell.style.borderTopColor = 'black';
-        cell.style.borderTopStyle = 'solid';
+        cell.style.borderTop = 'solid black';
     }
 
     if (y === 0) {
-        cell.style.borderLeftColor = 'black';
-        cell.style.borderLeftStyle = 'solid';
+        cell.style.borderLeft = 'solid black';
     }
 
     if (x === 9) {
-        cell.style.borderBottomColor = 'black';
-        cell.style.borderBottomStyle = 'solid';
+        cell.style.borderBottom = 'solid black';
     }
 
     if (y === 9) {
-        cell.style.borderRightColor = 'black';
-        cell.style.borderRightStyle = 'solid';
+        cell.style.borderRight = 'solid black';
     }
 }
 
@@ -72,6 +68,39 @@ class Cell {
         let randomNeighbour = unvisitedNeighbours[Math.floor(Math.random() * unvisitedNeighbours.length)];
 
         return unvisitedNeighbours.length ? cells[randomNeighbour] : null;
+    }
+
+    drawWalls() {
+        document.getElementById(this.id).style.backgroundColor = 'yellow';
+
+        if (cells.hasOwnProperty(`${this.x}${this.y - 1}`)) {
+            if (!cells[`${this.x}${this.y - 1}`].visited) {
+                document.getElementById(this.id).style.borderLeft = 'solid black';
+            } else {
+                document.getElementById(`${this.x}${this.y - 1}`).style.borderRight = 'none';
+            }
+        }
+        if (cells.hasOwnProperty(`${this.x + 1}${this.y}`)) {
+            if (!cells[`${this.x + 1}${this.y}`].visited) {
+                document.getElementById(this.id).style.borderBottom = 'solid black';
+            } else {
+                document.getElementById(`${this.x + 1}${this.y}`).style.borderTop = 'none';
+            }
+        }
+        if (cells.hasOwnProperty(`${this.x}${this.y + 1}`)) {
+            if (!cells[`${this.x}${this.y + 1}`].visited) {
+                document.getElementById(this.id).style.borderRight = 'solid black';
+            } else {
+                document.getElementById(`${this.x}${this.y + 1}`).style.borderLeft = 'none';
+            }
+        }
+        if (cells.hasOwnProperty(`${this.x - 1}${this.y}`)) {
+            if (!cells[`${this.x - 1}${this.y}`].visited) {
+                document.getElementById(this.id).style.borderTop = 'solid black';
+            } else {
+                document.getElementById(`${this.x - 1}${this.y}`).style.borderBottom = 'none';
+            }
+        }
     }
 }
 
@@ -96,7 +125,7 @@ function setupNeighbours() {
 
 function drawMaze(cell) {
     cell.visited = true;
-    document.getElementById(cell.id).style.backgroundColor = 'purple';
+    cell.drawWalls();
     
     if (newCell = cell.getUnvisitedNeighbour()) {
         drawMaze(newCell);
