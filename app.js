@@ -65,7 +65,6 @@ class Cell {
         this.y = y;
         this.id = `${x}${y}`;
         this.neighbours = [];
-        this.neighbourz = {};
     }
 
     getUnvisitedNeighbour() {
